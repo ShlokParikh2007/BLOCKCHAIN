@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Control</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:            #111318;
+      --bg-panel:      #16191f;
+      --bg-card:       #1c1f27;
+      --bg-input:      #13161c;
+      --bg-hover:      #21242d;
+      --accent:        #4ade80;
+      --accent-dim:    rgba(74,222,128,0.12);
+      --accent-border: rgba(74,222,128,0.25);
+      --text:          #e2e4e9;
+      --text-dim:      #6b7280;
+      --text-muted:    #3a3f4a;
+      --border:        #25282f;
+      --red:           #f87171;
+      --red-dim:       rgba(248,113,113,0.1);
+      --red-border:    rgba(248,113,113,0.25);
+      --gold:          #fbbf24;
+      --radius:        8px;
+      --radius-sm:     5px;
+      --font:          'Inter', system-ui, sans-serif;
+      --font-display:  'Orbitron', sans-serif;
+      --mono:          'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      font-size: 13px;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ── */
+    header {
+      height: 52px;
+      padding: 0 24px;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-brand {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-brand span { color: var(--accent); }
+
+    .header-badge {
+      font-size: 11px;
+      font-family: var(--mono);
+      color: var(--text-dim);
+      padding: 3px 10px;
+      border: 1px solid var(--border);
+      border-radius: 99px;
+    }
+
+    /* ── LAYOUT ── */
+    .page {
+      max-width: 520px;
+      margin: 40px auto;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title::before {
+      content: '';
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* ── LOGIN CARD ── */
+    #loginCard {
+      text-align: center;
+      padding: 36px 32px;
+    }
+
+    .login-icon {
+      font-size: 32px;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 14px;
+    }
+
+    .login-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .login-sub {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-bottom: 24px;
+    }
+
+    /* ── FIELDS ── */
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 12px;
+      text-align: left;
+    }
+
+    .field label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-dim);
+    }
+
+    input, select {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 13px;
+      padding: 9px 11px;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(74,222,128,0.1);
+    }
+
+    input::placeholder { color: var(--text-muted); }
+
+    input[type="password"] {
+      font-family: var(--mono);
+      letter-spacing: 2px;
+    }
+
+    /* ── INPUT GROUP (inline 3-col) ── */
+    .input-group-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 100px;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .input-group-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      padding: 9px 16px;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+
+    .btn:active { transform: scale(0.98); }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #0a0f0a;
+      width: 100%;
+    }
+
+    .btn-primary:hover { opacity: 0.85; }
+
+    .btn-secondary {
+      background: var(--bg-hover);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover { background: #272a34; }
+
+    .btn-danger {
+      background: var(--red-dim);
+      color: var(--red);
+      border: 1px solid var(--red-border);
+    }
+
+    .btn-danger:hover { background: rgba(248,113,113,0.18); }
+
+    .btn-full { width: 100%; }
+
+    /* ── BUTTON ROW ── */
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    /* ── ROUND STATUS INDICATOR ── */
+    .round-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      background: var(--red-dim);
+      border: 1px solid var(--red-border);
+      margin-bottom: 14px;
+      transition: all 0.3s;
+    }
+
+    .round-status.active {
+      background: var(--accent-dim);
+      border-color: var(--accent-border);
+    }
+
+    .round-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--red);
+      flex-shrink: 0;
+      animation: blink 1.5s ease-in-out infinite;
+    }
+
+    .round-status.active .round-dot { background: var(--accent); }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    .round-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--red);
+    }
+
+    .round-status.active .round-label { color: var(--accent); }
+
+    .round-timer {
+      margin-left: auto;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 16px 0;
+    }
+
+    /* ── STATUS TOAST ── */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 10px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      color: var(--text);
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.25s;
+      pointer-events: none;
+      font-family: var(--mono);
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-brand">⬡ <span>Admin</span> Control Panel</div>
+    <div class="header-badge" id="authBadge">● Not Authenticated</div>
+  </header>
+
+  <div class="page">
+
+    <!-- LOGIN -->
+    <div class="card" id="loginCard">
+      <div class="login-icon">⬡</div>
+      <div class="login-title">Admin Access</div>
+      <p class="login-sub">Enter your password to continue</p>
+
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="adminPass" placeholder="Enter password" onkeydown="if(event.key==='Enter') login()" />
+      </div>
+
+      <button class="btn btn-primary" onclick="login()">Authenticate</button>
+    </div>
+
+    <!-- ADMIN PANEL -->
+    <div id="adminPanel" style="display:none;">
+
+      <!-- TRANSACTION -->
+      <div class="card">
+        <div class="card-title">Update Transaction</div>
+
+        <div class="input-group-3">
+          <div class="field" style="margin:0;">
+            <label>Sender</label>
+            <input id="sender" placeholder="e.g. Krishiv" />
+          </div>
+          <div class="field" style="margin:0;">
+            <label>Receiver</label>
+            <input id="receiver" placeholder="e.g. Shlok" />
+          </div>
+          <div class="field" style="margin:0;">
+            <label>Amount</label>
+            <input id="amount" placeholder="100" />
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-full" onclick="updateTx()">Push Transaction</button>
+      </div>
+
+      <!-- GAME CONFIG -->
+      <div class="card">
+        <div class="card-title">Game Configuration</div>
+
+        <div class="input-group-2">
+          <div class="field" style="margin:0;">
+            <label>Number of Teams</label>
+            <input id="numTeams" type="number" placeholder="e.g. 4" min="2" max="10" value="4" />
+          </div>
+          <div class="field" style="margin:0;">
+            <label>Difficulty Level</label>
+            <input id="difficulty" type="number" placeholder="e.g. 5" min="0" max="10" value="0" />
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-full" onclick="updateConfig()">Apply Settings</button>
+      </div>
+
+      <!-- ROUND CONTROL -->
+      <div class="card">
+        <div class="card-title">Round Control</div>
+
+        <div class="round-status" id="roundStatusBox">
+          <span class="round-dot"></span>
+          <span class="round-label" id="roundLabel">Round Inactive</span>
+          <span class="round-timer" id="roundTimerDisplay">—</span>
+        </div>
+
+        <div class="field">
+          <label>Duration (seconds)</label>
+          <input id="roundTime" placeholder="e.g. 60" type="number" min="5" />
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="startRound()">▶ Start Round</button>
+          <button class="btn btn-danger" onclick="endRound()">■ End Round</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    let countdown = null;
+
+    function showToast(msg, color) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.style.borderLeftColor = color || "var(--accent)";
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2800);
+    }
+
+    function login() {
+      const password = document.getElementById("adminPass").value;
+
+      fetch("/admin-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          document.getElementById("loginCard").style.display = "none";
+          document.getElementById("adminPanel").style.display = "block";
+          document.getElementById("authBadge").textContent = "● Authenticated";
+          document.getElementById("authBadge").style.color = "var(--accent)";
+          showToast("Login successful");
+        } else {
+          showToast("Wrong password", "var(--red)");
+        }
+      });
+    }
+
+    function updateTx() {
+      const sender   = document.getElementById("sender").value;
+      const receiver = document.getElementById("receiver").value;
+      const amount   = document.getElementById("amount").value;
+
+      if (!sender || !receiver || !amount) {
+        showToast("Fill in all fields", "var(--gold)");
+        return;
+      }
+
+      socket.emit("updateTransaction", { sender, receiver, amount });
+      showToast(`Transaction updated: ${sender} → ${receiver} (${amount})`);
+    }
+
+    function updateConfig() {
+      const numTeams = parseInt(document.getElementById("numTeams").value);
+      const difficulty = parseInt(document.getElementById("difficulty").value);
+
+      if (!numTeams || numTeams < 2) {
+        showToast("Teams must be at least 2", "var(--gold)");
+        return;
+      }
+
+      socket.emit("updateConfig", { numTeams, difficulty });
+      showToast(`Config updated: ${numTeams} teams, difficulty ${difficulty}`);
+    }
+
+    function startRound() {
+      const duration = parseInt(document.getElementById("roundTime").value);
+      if (!duration || duration < 1) {
+        showToast("Enter a valid duration", "var(--gold)");
+        return;
+      }
+
+      socket.emit("startRound", duration);
+
+      // Local countdown display
+      const box   = document.getElementById("roundStatusBox");
+      const label = document.getElementById("roundLabel");
+      const timer = document.getElementById("roundTimerDisplay");
+
+      box.classList.add("active");
+      label.textContent = "Round Active";
+
+      let t = duration;
+      timer.textContent = t + "s";
+
+      clearInterval(countdown);
+      countdown = setInterval(() => {
+        t--;
+        timer.textContent = t + "s";
+        if (t <= 0) {
+          clearInterval(countdown);
+          box.classList.remove("active");
+          label.textContent = "Round Inactive";
+          timer.textContent = "—";
+        }
+      }, 1000);
+
+      showToast(`Round started — ${duration}s`);
+    }
+
+    function endRound() {
+      socket.emit("endRound");
+      clearInterval(countdown);
+
+      const box   = document.getElementById("roundStatusBox");
+      const label = document.getElementById("roundLabel");
+      const timer = document.getElementById("roundTimerDisplay");
+
+      box.classList.remove("active");
+      label.textContent = "Round Inactive";
+      timer.textContent = "—";
+
+      showToast("Round ended", "var(--red)");
+    }
+  </script>
+  
+</body>
+</html>

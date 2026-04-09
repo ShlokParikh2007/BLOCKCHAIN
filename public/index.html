@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Blockchain Mining Game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── JOIN SCREEN ── -->
+  <div id="joinScreen" class="join-wrap">
+    <div class="join-card">
+      <div class="join-icon">⬡</div>
+      <h1>Mining Game</h1>
+      <p class="join-sub">Enter your details to join the network</p>
+
+      <div class="field">
+        <label>Your Name</label>
+        <input id="nameInput" placeholder="e.g. Shlok" />
+      </div>
+
+      <div class="field">
+  <label>Select Team</label>
+  <select id="teamSelect">
+    <!-- Teams will be populated by server -->
+  </select>
+</div>
+
+      <button onclick="joinGame()">Join Game</button>
+    </div>
+  </div>
+
+  <!-- ── GAME SCREEN ── -->
+  <div id="gameScreen" class="game-layout" style="display:none;">
+
+    <header>
+      <div class="header-brand">⬡ Blockchain Mining</div>
+      <div class="header-status"><span class="status-dot"></span> Network Active</div>
+    </header>
+
+    <main>
+
+      <!-- LEFT: TEAMS -->
+      <aside class="sidebar">
+        <div class="sidebar-title">Teams</div>
+        <div id="teams"></div>
+      </aside>
+
+      <!-- CENTER -->
+      <section class="center">
+
+        <!-- VISUALIZER -->
+        <div class="card">
+          <div class="card-title">SHA-256 Visualizer</div>
+          <iframe
+            src="https://emn178.github.io/online-tools/sha256.html"
+            class="blockchain-frame"
+            frameborder="0">
+          </iframe>
+        </div>
+
+        <!-- MINING -->
+        <div class="card">
+          <div class="card-title">Mining Area</div>
+
+          <div class="tx-box">
+            <span class="tx-label">Transaction</span>
+            <p id="transactionText">Waiting for transaction...</p>
+          </div>
+
+          <div class="difficulty-row">
+            <span class="dim">Difficulty</span>
+            <span class="diff-value">0</span>
+          </div>
+
+          <div class="round-badge" id="roundStatusBox">
+            <span class="round-dot"></span>
+            <strong id="roundTimer">🛑 Round Inactive</strong>
+          </div>
+
+          <div class="input-row">
+            <div class="field">
+              <label>Nonce</label>
+              <input id="nonceInput" placeholder="Enter nonce" />
+            </div>
+            <div class="field">
+              <label>Hash</label>
+              <input id="hashInput" placeholder="Enter hash" />
+            </div>
+          </div>
+
+          <button id="submitBtn" onclick="submitResult()">Submit Result</button>
+          <p id="submitStatus" class="status-msg"></p>
+        </div>
+
+        <!-- LATEST BLOCK -->
+        <div class="card">
+          <div class="card-title">Latest Block</div>
+          <div class="block-info">
+            <div class="info-row"><span class="dim">Transaction</span><span id="blockTx">—</span></div>
+            <div class="info-row"><span class="dim">Verified By</span><span id="blockTeam">—</span></div>
+            <div class="info-row"><span class="dim">Nonce</span><span id="blockNonce" class="mono">—</span></div>
+            <div class="info-row"><span class="dim">Hash</span><span id="blockHash" class="mono hash">—</span></div>
+            <div class="info-row"><span class="dim">Status</span><span id="blockStatus" class="tag-pending">Pending ⏳</span></div>
+          </div>
+        </div>
+
+        <!-- BLOCK HISTORY -->
+        <div class="card">
+          <div class="card-title">Block History</div>
+          <div id="blockHistory">
+            <p class="empty-state">No blocks mined yet</p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- RIGHT: VERIFY + LEADERBOARD -->
+      <aside class="sidebar right-sidebar">
+
+        <div class="sidebar-title">Verification</div>
+        <div class="verify-box">
+          <p id="verificationStatus">Waiting for submissions…</p>
+        </div>
+
+        <div class="sidebar-title" style="margin-top:24px;">Leaderboard</div>
+        <div id="leaderboard"></div>
+
+
+
+      </aside>
+
+    </main>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const box = document.getElementById("roundStatusBox");
+      const timer = document.getElementById("roundTimer");
+      const observer = new MutationObserver(() => {
+        const isActive = !timer.innerText.includes("Inactive") && !timer.innerText.includes("🛑");
+        box.classList.toggle("active", isActive);
+      });
+      observer.observe(timer, { childList: true, characterData: true, subtree: true });
+    });
+  </script>
+</body>
+</html>
