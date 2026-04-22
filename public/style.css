@@ -9,7 +9,7 @@
   --bg-input:     #13161c;
   --bg-hover:     #21242d;
 
-  --accent:       #4ade80;       /* soft green — not neon */
+  --accent:       #4ade80;
   --accent-dim:   rgba(74,222,128,0.12);
   --accent-border:rgba(74,222,128,0.25);
 
@@ -34,12 +34,21 @@
 /* ── RESET ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* ── FIX: Prevent browser/frame from shrinking text ── */
+html {
+  font-size: 14px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  height: 100%;
+}
+
 body {
   font-family: var(--font);
-  font-size: 13px;
+  font-size: 1rem;
   background: var(--bg);
   color: var(--text);
-  min-height: 100vh;
+  min-height: 100%;
+  height: 100%;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -56,16 +65,16 @@ body {
 
 .join-card {
   width: 100%;
-  max-width: 360px;
+  max-width: 400px;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 36px 32px;
+  padding: 40px 36px;
   text-align: center;
 }
 
 .join-icon {
-  font-size: 36px;
+  font-size: 40px;
   color: var(--accent);
   margin-bottom: 16px;
   display: block;
@@ -73,7 +82,7 @@ body {
 }
 
 .join-card h1 {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
   font-family: var(--font-display);
   color: var(--text);
@@ -82,7 +91,7 @@ body {
 }
 
 .join-sub {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-dim);
   margin-bottom: 28px;
 }
@@ -91,13 +100,13 @@ body {
 .field {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  margin-bottom: 14px;
+  gap: 6px;
+  margin-bottom: 16px;
   text-align: left;
 }
 
 .field label {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--text-dim);
 }
@@ -109,8 +118,8 @@ input, select {
   border-radius: var(--radius-sm);
   color: var(--text);
   font-family: var(--font);
-  font-size: 13px;
-  padding: 9px 11px;
+  font-size: 14px;
+  padding: 10px 12px;
   outline: none;
   transition: border-color 0.15s, box-shadow 0.15s;
   appearance: none;
@@ -122,13 +131,13 @@ input:focus, select:focus {
   box-shadow: 0 0 0 3px rgba(74,222,128,0.1);
 }
 
-input::placeholder { color: var(--text-muted); }
+input::placeholder { color: var(--text-muted); font-size: 13px; }
 
 select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236b7280'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 11px center;
-  padding-right: 30px;
+  background-position: right 12px center;
+  padding-right: 32px;
   cursor: pointer;
 }
 
@@ -140,18 +149,18 @@ select option {
 /* ── BUTTON ── */
 button {
   width: 100%;
-  padding: 10px 16px;
+  padding: 11px 16px;
   margin-top: 4px;
   background: var(--accent);
   border: none;
   border-radius: var(--radius-sm);
   color: #0a0f0a;
   font-family: var(--font);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: opacity 0.15s, transform 0.1s;
-  letter-spacing: 0.1px;
+  letter-spacing: 0.2px;
 }
 
 button:hover  { opacity: 0.88; }
@@ -168,6 +177,7 @@ button:disabled {
    GAME LAYOUT
 ══════════════════════ */
 .game-layout {
+  min-height: 100vh;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -176,7 +186,7 @@ button:disabled {
 
 /* ── HEADER ── */
 header {
-  height: 52px;
+  height: 48px;
   padding: 0 20px;
   background: var(--bg-panel);
   border-bottom: 1px solid var(--border);
@@ -187,7 +197,7 @@ header {
 }
 
 .header-brand {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   font-family: var(--font-display);
   color: var(--text);
@@ -201,7 +211,7 @@ header {
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-dim);
 }
 
@@ -222,8 +232,9 @@ header {
 main {
   flex: 1;
   display: grid;
-  grid-template-columns: 200px 1fr 260px;
+  grid-template-columns: 180px 1fr 240px;
   overflow: hidden;
+  min-height: 0;   /* critical: prevents flex children from overflowing */
 }
 
 /* ══════════════════════
@@ -232,7 +243,7 @@ main {
 .sidebar {
   background: var(--bg-panel);
   border-right: 1px solid var(--border);
-  padding: 18px 14px;
+  padding: 16px 12px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
@@ -243,16 +254,11 @@ main {
   border-left: 1px solid var(--border);
 }
 
-
-
-/* Teams injected by script */
-#teams div {
-  margin-bottom: 16px;
-}
+#teams div { margin-bottom: 14px; }
 
 #teams strong {
   display: block;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text);
   margin-bottom: 6px;
@@ -265,11 +271,11 @@ main {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
 }
 
 #teams li {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-dim);
   padding: 5px 8px;
   border-radius: var(--radius-sm);
@@ -286,12 +292,13 @@ main {
 ══════════════════════ */
 .center {
   overflow-y: auto;
-  padding: 18px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
+  min-height: 0;
 }
 
 /* ── CARD ── */
@@ -299,7 +306,7 @@ main {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 14px 16px;
 }
 
 .card-title {
@@ -309,7 +316,7 @@ main {
   color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .sidebar-title {
@@ -319,13 +326,13 @@ main {
   color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 /* ── IFRAME ── */
 .blockchain-frame {
   width: 100%;
-  height: 260px;
+  height: 240px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   display: block;
@@ -343,7 +350,7 @@ main {
 }
 
 .tx-label {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--accent);
   text-transform: uppercase;
@@ -380,11 +387,11 @@ main {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 9px 12px;
+  padding: 8px 12px;
   border-radius: var(--radius-sm);
   background: rgba(248,113,113,0.08);
   border: 1px solid rgba(248,113,113,0.2);
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .round-badge.active {
@@ -426,7 +433,7 @@ main {
 /* ── STATUS MSG ── */
 .status-msg {
   margin-top: 8px;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-dim);
   min-height: 16px;
   text-align: center;
@@ -436,7 +443,7 @@ main {
 .block-info {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .info-row {
@@ -445,7 +452,7 @@ main {
   align-items: baseline;
   gap: 12px;
   font-size: 13px;
-  padding-bottom: 8px;
+  padding-bottom: 7px;
   border-bottom: 1px solid var(--border);
 }
 
@@ -461,12 +468,12 @@ main {
 .mono { font-family: var(--mono); font-size: 12px; }
 
 .hash {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-dim) !important;
 }
 
 .tag-pending {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--gold);
   background: rgba(251,191,36,0.1);
   border: 1px solid rgba(251,191,36,0.2);
@@ -478,11 +485,11 @@ main {
 .empty-state {
   text-align: center;
   color: var(--text-muted);
-  font-size: 12px;
-  padding: 16px 0;
+  font-size: 13px;
+  padding: 14px 0;
 }
 
-/* ── BLOCK CARDS (injected by script) ── */
+/* ── BLOCK CARDS ── */
 .block-card {
   background: var(--bg-input);
   border: 1px solid var(--border);
@@ -490,22 +497,22 @@ main {
   border-radius: var(--radius-sm);
   padding: 10px 12px;
   margin-bottom: 8px;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .block-card strong {
   display: block;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text);
-  margin-bottom: 6px;
+  margin-bottom: 5px;
 }
 
 .block-card p {
   color: var(--text-dim);
   margin: 3px 0;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 12px;
   word-break: break-all;
 }
 
@@ -521,40 +528,33 @@ main {
 }
 
 #verificationStatus {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-dim);
   line-height: 1.6;
 }
 
-#verificationStatus strong {
-  color: var(--accent);
-  font-weight: 600;
-}
+#verificationStatus strong { color: var(--accent); font-weight: 600; }
 
-/* Verify button injected by script */
 #verificationStatus button {
   margin-top: 10px;
   background: transparent;
   border: 1px solid var(--accent-border);
   color: var(--accent);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   padding: 7px 14px;
   width: auto;
   border-radius: var(--radius-sm);
 }
 
-#verificationStatus button:hover {
-  background: var(--accent-dim);
-  opacity: 1;
-}
+#verificationStatus button:hover { background: var(--accent-dim); opacity: 1; }
 
-/* ── LEADERBOARD (script injects <strong> + <span>) ── */
+/* ── LEADERBOARD ── */
 .leaderboard-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 9px 10px;
+  padding: 8px 10px;
   margin-bottom: 4px;
   border-radius: var(--radius-sm);
   background: var(--bg-card);
@@ -570,39 +570,25 @@ main {
   background: rgba(251,191,36,0.05);
 }
 
-.leaderboard-row strong {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text);
-}
-
-.leaderboard-row span {
-  font-size: 12px;
-  font-family: var(--mono);
-  color: var(--text-dim);
-}
+.leaderboard-row strong { font-size: 13px; font-weight: 500; color: var(--text); }
+.leaderboard-row span   { font-size: 13px; font-family: var(--mono); color: var(--text-dim); }
 
 .leaderboard-row:first-child strong { color: var(--gold); }
 .leaderboard-row:first-child span   { color: var(--gold); }
 
 /* ── NETWORK STATS ── */
-.net-stats {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
+.net-stats { display: flex; flex-direction: column; gap: 2px; }
 
 .stat-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 7px 0;
+  padding: 6px 0;
   border-bottom: 1px solid var(--border);
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .stat-row:last-child { border-bottom: none; }
-
 .stat-green { color: var(--accent); font-family: var(--mono); }
 .stat-red   { color: var(--red);    font-family: var(--mono); }
 
@@ -617,51 +603,31 @@ main {
 /* ══════════════════════════════
    VOTING / VERIFICATION UI
 ══════════════════════════════ */
-
-/* Waiting message for submitting team */
 .vote-waiting {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-dim);
   padding: 10px 0;
   line-height: 1.5;
 }
 
-.vote-waiting-icon { font-size: 16px; }
+.vote-waiting-icon { font-size: 15px; }
 
-/* Submission info shown to other teams */
 .vote-submission-info {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-dim);
   margin-bottom: 12px;
   line-height: 1.8;
 }
 
-.vote-team {
-  font-family: var(--font-display);
-  font-size: 10px;
-  color: var(--accent);
-  letter-spacing: 1px;
-}
-
-.vote-detail {
-  font-size: 11px;
-  color: var(--text-dim);
-  font-family: var(--mono);
-}
-
-.hash-small {
-  font-size: 10px;
-  word-break: break-all;
-  color: var(--text-muted);
-}
+.vote-team { font-family: var(--font-display); font-size: 11px; color: var(--accent); letter-spacing: 1px; }
+.vote-detail { font-size: 13px; color: var(--text-dim); font-family: var(--mono); }
+.hash-small { font-size: 11px; word-break: break-all; color: var(--text-muted); }
 
 /* ── PROGRESS BAR ── */
-.vote-progress-wrap {
-  margin: 10px 0;
-}
+.vote-progress-wrap { margin: 10px 0; }
 
 .vote-progress-header {
   display: flex;
@@ -678,15 +644,11 @@ main {
   text-transform: uppercase;
 }
 
-.vote-progress-count {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--text-dim);
-}
+.vote-progress-count { font-family: var(--mono); font-size: 12px; color: var(--text-dim); }
 
 .vote-bar-track {
   width: 100%;
-  height: 6px;
+  height: 5px;
   background: var(--bg-input);
   border-radius: 99px;
   overflow: hidden;
@@ -711,30 +673,21 @@ main {
   min-width: 0;
 }
 
-.vote-stats {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 6px;
-}
-
-.vote-stat {
-  font-family: var(--mono);
-  font-size: 11px;
-}
-
+.vote-stats { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.vote-stat  { font-family: var(--mono); font-size: 12px; }
 .vote-stat.yes { color: var(--accent); }
 .vote-stat.no  { color: var(--red); }
 
 .vote-threshold {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-muted);
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
-.threshold-met   { color: var(--accent); font-size: 11px; }
-.threshold-unmet { color: var(--text-muted); font-size: 11px; }
+.threshold-met   { color: var(--accent); font-size: 12px; }
+.threshold-unmet { color: var(--text-muted); font-size: 12px; }
 
 /* ── APPROVE / REJECT BUTTONS ── */
 .vote-buttons {
@@ -745,10 +698,10 @@ main {
 }
 
 .btn-vote {
-  padding: 9px 12px;
+  padding: 8px 12px;
   border-radius: var(--radius-sm);
   font-family: var(--font);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   border: none;
@@ -776,7 +729,7 @@ main {
 .btn-vote.no:hover { background: rgba(248,113,113,0.18); opacity: 1; }
 
 .vote-cast-msg {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-dim);
   padding: 8px 0;
   font-family: var(--mono);
@@ -787,7 +740,7 @@ main {
 .result-approved,
 .result-rejected {
   text-align: center;
-  padding: 16px 10px;
+  padding: 14px 10px;
   border-radius: var(--radius-sm);
 }
 
@@ -801,41 +754,26 @@ main {
   border: 1px solid rgba(248,113,113,0.2);
 }
 
-.result-icon {
-  font-size: 22px;
-  margin-bottom: 6px;
-}
-
+.result-icon { font-size: 20px; margin-bottom: 6px; }
 .result-approved .result-icon { color: var(--accent); }
 .result-rejected .result-icon { color: var(--red); }
 
 .result-title {
   font-family: var(--font-display);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 1.5px;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
 }
 
 .result-approved .result-title { color: var(--accent); }
 .result-rejected .result-title { color: var(--red); }
 
-.result-detail {
-  font-size: 11px;
-  color: var(--text-dim);
-  margin-bottom: 6px;
-  font-family: var(--mono);
-}
-
-.result-team {
-  font-size: 12px;
-  color: var(--gold);
-  font-weight: 600;
-  margin-top: 4px;
-}
+.result-detail { font-size: 12px; color: var(--text-dim); margin-bottom: 5px; font-family: var(--mono); }
+.result-team   { font-size: 13px; color: var(--gold); font-weight: 600; margin-top: 4px; }
 
 /* ── VERIFIED TAG ── */
 .tag-verified {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--accent);
   background: var(--accent-dim);
   border: 1px solid var(--accent-border);
